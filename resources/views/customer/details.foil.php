@@ -6,9 +6,9 @@
 
 <?php $this->section( 'page-header-preamble' ) ?>
     <?php if( Auth::check() && Auth::getUser()->isSuperUser() ): ?>
-        <?= $t->associates ? ( 'Associate ' . ucfirst( config( 'ixp_fe.lang.customer.many' ) ) )  : ucfirst( config( 'ixp_fe.lang.customer.many' ) ) ?>
+        <?= $t->associates ? __c( 'Associate :Customers' ) : __c( ':Customers' ) ?>
     <?php else: ?>
-        <?= $t->associates ? 'Associate' : '' ?> <?= ucfirst( config( 'ixp_fe.lang.customer.many' ) ) ?>
+        <?= $t->associates ? __c( 'Associate :Customers' ) : __c( ':Customers' ) ?>
     <?php endif; ?>
 <?php $this->append() ?>
 
@@ -22,7 +22,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>
-                            <?= ucfirst( config( 'ixp_fe.lang.customer.one' ) ) ?>
+                            <?= __c( ':Customer' ) ?>
                         </th>
                         <th class="tw-hidden md:tw-table-cell">
                             <?= __( 'Joined' ) ?>
