@@ -4,19 +4,19 @@
     <table class="tw-mt-8">
         <tr class="tw-border-t-1 tw-border-blue-500">
             <td class="tw-text-right tw-font-bold tw-p-2">
-                Created By
+                <?= __( 'Created By' ) ?>
             </td>
             <td class="tw-pl-4 tw-font-mono tw-text-sm tw-p-2">
                 <?php if( $t->created_by ): ?>
                     <?= $t->ee( $t->created_by->username ) ?> (<?= $t->ee( $t->created_by->name ) ?>)
                 <?php else: ?>
-                    <em>User no longer exists in database.</em>
+                    <em><?= __( 'User no longer exists in database.' ) ?></em>
                 <?php endif; ?>
             </td>
         </tr>
         <tr class="tw-border-t-1 tw-border-blue-500">
             <td class="tw-text-right tw-font-bold tw-p-2">
-                Customer
+                <?= __( 'Customer' ) ?>
             </td>
             <td class="tw-pl-4 tw-font-mono tw-text-sm tw-p-2">
                 <?= $t->ee( $t->file->customer->name ) ?>
@@ -24,7 +24,7 @@
         </tr>
         <tr class="tw-border-t-1 tw-border-blue-500">
             <td class="tw-text-right tw-font-bold tw-p-2">
-                Path
+                <?= __( 'Path' ) ?>
             </td>
             <td class="tw-pl-4 tw-font-mono tw-text-sm tw-p-2">
                 <?= $t->dspath ?>
@@ -32,7 +32,7 @@
         </tr>
         <tr class="tw-border-t-1 tw-border-blue-500">
             <td class="tw-text-right tw-font-bold tw-p-2">
-                Created
+                <?= __( 'Created' ) ?>
             </td>
             <td class="tw-pl-4 tw-font-mono tw-text-sm tw-p-2">
                 <?= $t->created_at ?>
@@ -40,7 +40,7 @@
         </tr>
         <tr class="tw-border-t-1 tw-border-blue-500">
             <td class="tw-text-right tw-font-bold tw-p-2">
-                Last Modified
+                <?= __( 'Last Modified' ) ?>
             </td>
             <td class="tw-pl-4 tw-font-mono tw-text-sm tw-p-2">
                 <?= \Carbon\Carbon::parse( $t->last_modified )->format( 'Y-m-d H:i:s',  ) ?>
@@ -48,7 +48,7 @@
         </tr>
         <tr class="tw-border-t-1 tw-border-b-1 tw-border-blue-500">
             <td class="tw-text-right tw-font-bold tw-p-2">
-                Size
+                <?= __( 'Size' ) ?>
             </td>
             <td class="tw-pl-4 tw-font-mono tw-text-sm tw-p-2">
                 <?= $t->scaleFilesize( $t->size ) ?>

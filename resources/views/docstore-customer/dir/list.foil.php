@@ -23,7 +23,7 @@
         <div class="btn-group btn-group-sm ml-auto" role="group">
 
             <a target="_blank" class="btn btn-white" href="https://docs.ixpmanager.org/latest/features/docstore/">
-                Documentation
+                <?= __( 'Documentation' ) ?>
             </a>
 
             <a id="add-dir" class="btn btn-white" href="<?= route('docstore-c-dir@list', [ 'cust' => $t->cust ] ) ?>"
@@ -96,7 +96,7 @@
                             </td>
                             <td class="<?= 'top' ?> tw-px-4 tw-py-2 tw-w-auto">
                                 <a href="<?= route('docstore-c-dir@list-patch-panel-port-file', [ 'cust' => $t->cust  ] ) ?>">
-                                    Patch Panel Port Files
+                                    <?= __( 'Patch Panel Port Files' ) ?>
                                 </a>
                             </td>
                             <td class="<?= 'top' ?> meta"></td>
@@ -114,7 +114,7 @@
                             </td>
                             <td class="<?= 'top' ?> tw-px-4 tw-py-2 tw-w-auto">
                                 <a href="<?= route('docstore-c-dir@list-patch-panel-port-history-file', [ 'cust' => $t->cust  ] ) ?>">
-                                    Patch Panel Port Files History
+                                    <?= __( 'Patch Panel Port Files History' ) ?>
                                 </a>
                             </td>
                             <td class="<?= 'top' ?> meta"></td>
@@ -147,10 +147,10 @@
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="<?= route( "docstore-c-dir@edit", [ 'cust' => $t->cust, 'dir' => $dir[ 'id' ] ] ) ?>">
-                                          Edit
+                                          <?= __( 'Edit' ) ?>
                                         </a>
                                         <a class="dropdown-item btn-delete" data-object-type="dir" href="<?= route('docstore-c-dir@delete', [ 'dir' => $dir[ 'id' ] ] ) ?>">
-                                          Delete
+                                          <?= __( 'Delete' ) ?>
                                         </a>
                                     </div>
                                 </div>
@@ -194,23 +194,23 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                     <?php if( $file->isViewable() ): ?>
-                                        <a class="dropdown-item" href="<?= route( 'docstore-c-file@download', [ 'cust' => $t->cust, 'file' => $file->id] ) ?>">Download</a>
+                                        <a class="dropdown-item" href="<?= route( 'docstore-c-file@download', [ 'cust' => $t->cust, 'file' => $file->id] ) ?>"><?= __( 'Download' ) ?></a>
                                     <?php endif; ?>
                                     <?php if( $check && $isSuperUser ): ?>
-                                        <a class="dropdown-item btn-meta" href="<?= route( "docstore-c-file@info", [ "file" => $file ] ) ?>">Metadata</a>
+                                        <a class="dropdown-item btn-meta" href="<?= route( "docstore-c-file@info", [ "file" => $file ] ) ?>"><?= __( 'Metadata' ) ?></a>
                                     <?php endif; ?>
                                     <a class="dropdown-item" href="#"
-                                       onclick="bootbox.alert({ message: 'SHA checksums can be used to check the authenticity / integrity of files.<br><br><?= $file->sha256 ? "SHA256 checksum: [<code>" . $t->ee( $file->sha256 ) . "</code>]" : "there is no sha256 checksum registered for this file." ?>', size: 'large' }); return false;">Show SHA256</a>
+                                       onclick="bootbox.alert({ message: 'SHA checksums can be used to check the authenticity / integrity of files.<br><br><?= $file->sha256 ? "SHA256 checksum: [<code>" . $t->ee( $file->sha256 ) . "</code>]" : "there is no sha256 checksum registered for this file." ?>', size: 'large' }); return false;"><?= __( 'Show SHA256' ) ?></a>
 
                                     <?php if( $check && $isSuperUser ): ?>
                                         <div class="dropdown-divider"></div>
                                         <?php if( !config( 'ixp_fe.frontend.disabled.logs' ) && method_exists( \IXP\Models\DocstoreCustomerFile::class, 'logSubject') ): ?>
                                             <a class="dropdown-item" href="<?= route( 'log@list', [ 'model' => 'DocstoreCustomerFile' , 'model_id' => $file->id ] ) ?>">
-                                                View logs
+                                                <?= __( 'View logs' ) ?>
                                             </a>
                                         <?php endif; ?>
-                                        <a class="dropdown-item" href="<?= route( "docstore-c-file@edit", [ 'cust' => $t->cust , "file" => $file ] ) ?>">Edit</a>
-                                        <a class="dropdown-item btn-delete" data-object-type="file" href="<?= route( "docstore-c-file@delete", [ "file" => $file ] ) ?>">Delete</a>
+                                        <a class="dropdown-item" href="<?= route( "docstore-c-file@edit", [ 'cust' => $t->cust , "file" => $file ] ) ?>"><?= __( 'Edit' ) ?></a>
+                                        <a class="dropdown-item btn-delete" data-object-type="file" href="<?= route( "docstore-c-file@delete", [ "file" => $file ] ) ?>"><?= __( 'Delete' ) ?></a>
                                     <?php endif; ?>
                                 </div>
                             </div>
