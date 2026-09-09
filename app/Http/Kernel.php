@@ -90,6 +90,8 @@ class Kernel extends HttpKernel
             Middleware\VerifyCsrfToken::class,
             SubstituteBindings::class,
             Middleware\ControllerEnabled::class,
+            // must come after StartSession so that Auth::user() can resolve:
+            Middleware\SetLocale::class,
         ],
 
         'apibase' => [
