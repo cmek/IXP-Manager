@@ -74,6 +74,6 @@ class ForgotPassword extends Mailable
     public function build(): self
     {
         return $this->markdown( 'auth/emails/forgot-password' )
-            ->subject( config('identity.sitename' ) . " - Password Reset Information " );
+            ->subject( __( ':site - Password Reset Information', [ 'site' => config( 'identity.sitename' ) ] ) );
     }
 }

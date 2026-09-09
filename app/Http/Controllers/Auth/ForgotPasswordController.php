@@ -130,7 +130,7 @@ class ForgotPasswordController extends Controller
      */
     protected function sendResetLinkResponse(): RedirectResponse
     {
-        AlertContainer::push( 'If your email matches user(s) on the system, then an email listing those users has been sent to you.', Alert::INFO );
+        AlertContainer::push( __( 'If your email matches user(s) on the system, then an email listing those users has been sent to you.' ), Alert::INFO );
         return redirect( route( 'login@login' ) );
     }
 
@@ -141,7 +141,7 @@ class ForgotPasswordController extends Controller
      */
     protected function sendResetLinkFailedResponse(): RedirectResponse
     {
-        AlertContainer::push( 'If your email matches user(s) on the system, then an email listing those users has been sent to you.', Alert::INFO );
+        AlertContainer::push( __( 'If your email matches user(s) on the system, then an email listing those users has been sent to you.' ), Alert::INFO );
         return redirect( route( 'login@login' ) );
     }
 
@@ -170,7 +170,7 @@ class ForgotPasswordController extends Controller
             event( new ForgotUsernameEvent( $users, $r->email ) );
         }
 
-        AlertContainer::push( 'If your email matches user(s) on the system, then an email listing those users has been sent to you.', Alert::INFO );
+        AlertContainer::push( __( 'If your email matches user(s) on the system, then an email listing those users has been sent to you.' ), Alert::INFO );
         return Redirect::to( route( "login@showForm" ));
     }
 }

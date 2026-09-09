@@ -66,6 +66,6 @@ class PasswordReset extends Mailable
     public function build(): self
     {
         return $this->markdown( 'auth/emails/password-reset' )
-            ->subject( config('identity.sitename' ) . " - Your Password Has Been Reset" );
+            ->subject( __( ':site - Your Password Has Been Reset', [ 'site' => config( 'identity.sitename' ) ] ) );
     }
 }

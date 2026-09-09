@@ -124,7 +124,8 @@ class CustomerToUserController extends Controller
         $user = $c2u->user;
 
         Log::notice( Auth::getUser()->username . ' created ' . $user->username . ' via CustomerToUser ID [' . $c2u->id . '] to ' . $c2u->customer->name );
-        AlertContainer::push( $user->name . '/' . $user->username . ' has been created to ' . $c2u->customer->name, Alert::SUCCESS );
+        AlertContainer::push( __( ':name/:username has been created to :customer', [
+            'name' => $user->name, 'username' => $user->username, 'customer' => $c2u->customer->name ] ), Alert::SUCCESS );
 
         // retrieve the customer ID
         if( strpos( $redirect, "customer/overview" ) ) {
@@ -206,7 +207,10 @@ class CustomerToUserController extends Controller
             $disassociatedUser->save();
         }
 
-        AlertContainer::push( $disassociatedUser->name  . '/' . $disassociatedUser->username . ' deleted from ' . $disassociatedCust->name, Alert::SUCCESS );
+        AlertContainer::push( __( ':name/:username deleted from :customer', [
+            'name'     => $disassociatedUser->name,
+            'username' => $disassociatedUser->username,
+            'customer' => $disassociatedCust->name ] ), Alert::SUCCESS );
         Log::notice( Auth::getUser()->username." deleted customer2user" . $disassociatedCust->name . '/' . $disassociatedUser->name );
 
         // If the user deleted itself and is logged in as the same customer:

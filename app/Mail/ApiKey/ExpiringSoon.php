@@ -44,6 +44,6 @@ class ExpiringSoon extends Mailable
     public function build(): self
     {
         return $this->markdown('api-key.emails.expiring-soon')
-            ->subject( config('identity.sitename') . ' - API key expiry reminder' );
+            ->subject( __( ':site - API key expiry reminder', [ 'site' => config( 'identity.sitename' ) ] ) );
     }
 }

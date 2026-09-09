@@ -159,7 +159,7 @@ class DashboardController extends Controller
         $c->lastupdatedby   =   Auth::id();
         $c->save();
 
-        AlertContainer::push( 'NOC details updated', Alert::SUCCESS );
+        AlertContainer::push( __( 'NOC details updated' ), Alert::SUCCESS );
         return redirect( route( "dashboard@index", [ "tab" => "details" ] ) );
     }
 
@@ -193,7 +193,7 @@ class DashboardController extends Controller
 
         event( new CustomerBillingDetailsChangedEvent( $ocbd, $cbd ) );
 
-        AlertContainer::push( 'Billing details updated.', Alert::SUCCESS );
+        AlertContainer::push( __( 'Billing details updated.' ), Alert::SUCCESS );
         return Redirect::to( route( "dashboard@index", [ "tab" => "details" ] ) );
     }
 }

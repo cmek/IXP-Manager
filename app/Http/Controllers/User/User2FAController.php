@@ -113,7 +113,7 @@ class User2FAController extends Controller
         }
 
         $this->google2faLogin( $r );
-        AlertContainer::push( "2FA successfully enabled.", Alert::SUCCESS );
+        AlertContainer::push( __( "2FA successfully enabled." ), Alert::SUCCESS );
         return redirect('');
     }
 
@@ -132,7 +132,7 @@ class User2FAController extends Controller
         $r->user()->user2FA->delete();
 
         $this->google2faLogin( $r, false );
-        AlertContainer::push( "2FA successfully disabled.", Alert::SUCCESS );
+        AlertContainer::push( __( "2FA successfully disabled." ), Alert::SUCCESS );
         return redirect( route('profile@edit' ) );
     }
 
@@ -147,7 +147,7 @@ class User2FAController extends Controller
     {
         $user?->user2FA?->delete();
 
-        AlertContainer::push( "2FA successfully deleted for {$user->username}.", Alert::SUCCESS );
+        AlertContainer::push( __( '2FA successfully deleted for :username.', [ 'username' => $user->username ] ), Alert::SUCCESS );
         return redirect( route('user@list' ) );
     }
 
@@ -201,7 +201,7 @@ class User2FAController extends Controller
     private function checkUserPassword( Request $r ): bool
     {
         if( !Hash::check( $r->password, $r->user()->password ) ) {
-            AlertContainer::push( 'Incorrect user password - please check your password and try again.', Alert::DANGER );
+            AlertContainer::push( __( 'Incorrect user password - please check your password and try again.' ), Alert::DANGER );
             return false;
         }
 
@@ -226,7 +226,7 @@ class User2FAController extends Controller
         $google2fa = app( 'pragmarx.google2fa' );
 
         if( !$google2fa->verifyKey( $r->user()->user2FA->secret, $r->one_time_password ) ) {
-            AlertContainer::push( "Incorrect one time code - please check your code and try again.", Alert::DANGER );
+            AlertContainer::push( __( "Incorrect one time code - please check your code and try again." ), Alert::DANGER );
             return false;
         }
 
