@@ -82,21 +82,53 @@ with `Undefined constant "DOCUMENTATION_VERSION"`. `.github/workflows/ci-dusk.ym
 uses the default `phpunit.xml` with `--testsuite 'Dusk / Browser Test Suite'`,
 and so should you.
 
-### Known-failing tests
+### Known-failing tests at v7.4.1
 
-At v7.4.0 the Dusk suite had 8 errors and 1 failure on a clean checkout, and
-was additionally flaky because every test shared one mutated database.
+The Dusk suite is substantially broken in this environment on a clean upstream
+checkout - not by anything local. Measured on plain `v7.4.1`:
 
-v7.4.1 changed that: the suites now use `RefreshDatabase` with a seeder, so
-each test starts from a known state. Re-establish your own baseline on a clean
-upstream checkout before trusting any comparison:
-
-```bash
-git stash && vendor/bin/phpunit --testsuite "Dusk / Browser Test Suite"; git stash pop
+```
+Tests: 37, Assertions: ~1240-1340, Errors: 20-21, Failures: 1, Risky: 8
 ```
 
-`ExampleTest::test_basic_example` is Laravel's stock scaffold test and expects
-the text "Laravel" on the home page; it has never passed here.
+The error count varies by one between runs of identical code, so compare
+**failing test names**, not counts. The set is stable:
+
+```
+ApiKeyControllerTest::test
+RsFilterControllerTest::testSuperUser / testCustAdmin / testCustUser
+SettingsControllerTest::testSettings
+SwitchControllerTest::testAdd
+SwitchPortControllerTest::testSwitchPort
+SwitchUserControllerTest::testLoginAs / testLoginAs2FA
+User2FAControllerTest::test / testWithRememberMe
+UserControllerTest::testAdd / testAddCustAdmin / testSuperAdminPrivs
+UserRememberTokenControllerTest::testAdd
+ValidationControllerTest::testRunValidations
+VendorControllerTest::testVendor
+VirtualInterfaceControllerTest::testAddWizard
+    / testDisabledMaxPrefixesPerVlan / testViRateLimitAndAutoneg
+VlanControllerTest::testAdd
+Failure: ExampleTest::test_basic_example   (Laravel's stock scaffold test)
+```
+
+**Always re-measure the baseline back to back with the branch**, on the same
+day and the same container. Four separate comparisons during the v7.4.1
+integration produced confident-looking but meaningless numbers, each for a
+different reason:
+
+- a `git checkout` that **aborted** on uncommitted changes, so the "baseline"
+  was actually the branch;
+- `.env` reverting to `DB_HOST=127.0.0.1`, so an entire run executed with no
+  database and failed 37/37 on `Connection refused` - `.env` is gitignored, so
+  nothing restores it;
+- a `grep` anchored to `^Tests:` that never matched, because PHPUnit wraps the
+  summary in ANSI colour codes - use `--colors=never`;
+- `composer update` reinstalling `laravel/dusk` and deleting the chromedriver.
+
+A comparison script should assert its own preconditions - which ref is checked
+out, that the server answers, that the database has rows - and print them, so
+the output carries its own proof. Silence is not success.
 
 ## Gotchas worth knowing
 
