@@ -38,8 +38,8 @@ use Illuminate\Database\Eloquent\{
  * @property string $device
  * @property string $ip
  * @property string $expires
- * @property int $is_2fa_complete
- * @property \Illuminate\Support\Carbon|null $created_at
+ * @property bool $is_2fa_complete
+ * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \IXP\Models\User $user
  * @method static Builder<static>|UserRememberToken newModelQuery()
@@ -73,6 +73,10 @@ class UserRememberToken extends Model
         'is_2fa_complete',
     ];
 
+    protected $casts = [
+        'is_2fa_complete' => 'boolean'
+    ];
+
     /**
      * Get the user that own the remember token
      *
@@ -91,5 +95,11 @@ class UserRememberToken extends Model
     public function expired(): bool
     {
         return $this->expires < now();
+    }
+
+    public function record2faIsComplete(): bool
+    {
+        $this->is_2fa_complete = true;
+        return $this->save();
     }
 }

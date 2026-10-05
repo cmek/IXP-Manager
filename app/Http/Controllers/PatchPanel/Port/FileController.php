@@ -99,6 +99,7 @@ class FileController extends Controller
         }
 
         AlertContainer::push( $message, $success ? Alert::SUCCESS : Alert::DANGER );
+        Log::info( sprintf( "File %d deleted by %s for the patch panel port [%d|%s]", $file->id, $r->user()->username, $file->patchPanelPort->id, $file->patchPanelPort->name() ) );
         return redirect()->to( route( 'patch-panel-port@view', [ 'ppp' => $file->patch_panel_port_id ] ) );
     }
 
@@ -134,6 +135,8 @@ class FileController extends Controller
                 'size'                  => Storage::size( $path ),
                 'storage_location'      => $hash
             ] );
+
+            Log::info( sprintf( "File [%d|%s] uploaded by %s for the patch panel port [%d|%s]", $pppf->id, $pppf->name, $r->user()->username, $ppp->id, $ppp->name() ) );
 
             return response()->json( [ 'success' => true, 'message' => 'File uploaded.', 'id' => $pppf->id ] );
         }

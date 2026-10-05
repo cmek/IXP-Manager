@@ -9,7 +9,7 @@
 ?>
 
 <?php $this->section( 'page-header-preamble' ) ?>
-    Patch Panel Port / Cross Connect - <?= $t->ee( $ppp->patchPanel->name ) ?> :: <?= $t->ee( $ppp->name() ) ?>
+    Patch Panel Port / Cross Connect - <?= $t->ee( $ppp->patchPanel->name ) ?> <?php if( !$ppp->patchPanel->active ): ?>[Inactive]<?php endif; ?> :: <?= $t->ee( $ppp->name() ) ?>
 <?php $this->append() ?>
 
 
@@ -28,7 +28,7 @@
                     'isSuperUser' => $isSuperUser ] ); ?>
 
             <a class="btn btn-white" href="<?= route('patch-panel-port@list-for-patch-panel' , [ "pp" => $ppp->patch_panel_id ] ) ?>" title="list">
-                <span class="fa fa-th-list"></span>
+                <span class="fa fa-table-list"></span>
             </a>
         </div>
     <?php $this->append() ?>

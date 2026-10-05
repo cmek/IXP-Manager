@@ -36,7 +36,7 @@ use IXP\Services\Validation\Dto\Result;
 /**
  * @author Thomas Kerin <thomas@islandbridgenetworks.ie>
  */
-class Router implements Validator
+final class Router implements Validator
 {
 
     #[\Override]
@@ -101,7 +101,7 @@ class Router implements Validator
         foreach (RouterModel::all() as $router) {
             // exclude quarantine?
             if (!$router->quarantine) {
-                if ($router->api_type === null || $router->api_type == 0) {
+                if ($router->api_type == 0) {
                     $needsLookingGlass[] = $router;
                 } else if ($router->api === null) {
                     $backend->error("Router " . $router->handle . " has Looking Glass API type configured, but API endpoint is empty")
@@ -119,7 +119,7 @@ class Router implements Validator
 
         if (count($needsLookingGlass) > 0) {
             $backend->warning("We recommend configuring Looking Glass on all routers - some found without")
-                ->each($needsLookingGlass, function (Result $result, RouterModel $router) {
+                ->each($needsLookingGlass, function (Result $result, RouterModel $router): void {
                     $result->addAdditionalInfoUrl(route("router@edit", ['router' => $router->id]), $router->name);
                 })
                 ->withDocsPath('features/looking-glass/');
@@ -129,7 +129,7 @@ class Router implements Validator
             $backend->error("Found customer VLAN's that are route server clients without IRRDB filtering enabled!")
                 ->withDocsPath("usage/interfaces/#general-vlan-settings")
                 ->addAdditionalInfoText("VLAN Interfaces (max 5 returned):")
-                ->each($customerRsVlansWithoutIrrdbFiltering, function (Result $result, $vlan) {
+                ->each($customerRsVlansWithoutIrrdbFiltering, function (Result $result, VlanInterface $vlan): void {
                     $result->addAdditionalInfoUrl(route("vlan-interface@edit", ['vli' => $vlan->id]), "Vlan Interface " . $vlan->id . " (".$vlan->virtualInterface->customer->name . ")");
                 });
         }

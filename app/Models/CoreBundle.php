@@ -112,14 +112,14 @@ class CoreBundle extends Model
     /**
      * CONST TYPES
      */
-    public const TYPE_ECMP              = 1;
-    public const TYPE_L2_LAG            = 2;
-    public const TYPE_L3_LAG            = 3;
+    public const int TYPE_ECMP              = 1;
+    public const int TYPE_L2_LAG            = 2;
+    public const int TYPE_L3_LAG            = 3;
 
     /**
      * Array STATES
      */
-    public static $TYPES = [
+    public static array $TYPES = [
         self::TYPE_ECMP          => "ECMP",
         self::TYPE_L2_LAG        => "L2-LAG (e.g. LACP)",
         self::TYPE_L3_LAG        => "L3-LAG",
@@ -316,7 +316,7 @@ class CoreBundle extends Model
     }
 
 
-        /**
+    /**
      * Check if the switch is the same for the Physical interfaces of the core links associated to the core bundle
      *
      * @param bool $sideA if true get the side A if false Side B
@@ -345,29 +345,18 @@ class CoreBundle extends Model
      */
     public function deleteObject(): bool
     {
-        try {
-            DB::beginTransaction();
-            $vis = [];
-            foreach( $this->corelinks as $cl ){
-                $cl->delete();
-                foreach( $cl->coreInterfaces() as $ci ){
-                    /** @var CoreInterface  $ci */
-                    $ci->delete();
-                    $vis[] = $ci->physicalInterface->virtualInterface;
-                    $ci->physicalInterface->delete();
-                }
-            }
+        // Take virtual interfaces before we delete relations in between
+        $vis = $this->virtualInterfaces();
 
-            foreach( $vis as $vi ){
-                $vi->delete();
-            }
-
-            $this->delete();
-            DB::commit();
-        } catch( Exception $e ) {
-            DB::rollBack();
-            throw $e;
+        foreach( $this->corelinks as $cl ){
+            $cl->deleteObject();
         }
+
+        foreach( $vis as $vi ){
+            $vi->delete();
+        }
+
+        $this->delete();
         return true;
     }
 

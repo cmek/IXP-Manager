@@ -1,5 +1,5 @@
 <?php if( $t->data['session_token'] === null ): ?>
-    <div class="alert alert-info tw-mb-8" role="alert">
+    <div class="alert alert-info tw:mb-8" role="alert">
         <?= __( ':activeSessions are only login sessions that had :rememberMe checked. Your current session was :not initiated with :rememberMe checked.', [
             'activeSessions' => '<b>'  . __( 'Active sessions' ) . '</b>',
             'rememberMe'     => '<em>' . __( 'Remember me' )     . '</em>',

@@ -469,7 +469,7 @@ function do_laravel_required_extension_checks( array $requiredByLaravel): array
 
 function do_laravel_writable_directory_checks(): array
 {
-    $storageDirectories = ["bootstrap", "storage/app/", "storage/docstore/", "storage/docstore_customers/", "storage/files/",
+    $storageDirectories = ["bootstrap/cache/", "storage/app/", "storage/docstore/", "storage/docstore_customers/", "storage/files/",
             "storage/framework/cache/", "storage/framework/sessions/", "storage/framework/views/",
             "storage/logs/", "storage/tmp/", "storage/"];
 
@@ -513,6 +513,14 @@ function do_laravel_writable_directory_checks(): array
     }
     if (count($dirFail) > 0) {
         $results[] = new CheckResult( ResultStatus::ERROR, [ 'Missing directory write permission in these storage directories: ' . implode( ', ', $dirFail ) ] );
+    }
+    if (count($results)) {
+        // Not using multiple messages as we want it to be easy to copy/paste.
+        $results[] = new CheckResult( ResultStatus::WARNING, [ #
+            "These commands should be run to fix the above errors.  If your web server does not run as user www-data, replace www-data with the actual webserver user on your system.\n" .
+            "   chown -R www-data: \$IXPROOT/{bootstrap/cache,composer.lock,storage,vendor}\n" .
+            "   chmod -R ug+rwX \$IXPROOT/{bootstrap/cache,composer.lock,storage,vendor}"
+        ] );
     }
     return $results;
 }

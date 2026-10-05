@@ -1,4 +1,4 @@
-<script>
+<script type="module">
     //////////////////////////////////////////////////////////////////////////////////////
     // we'll need these handles to html elements in a few places:
 
@@ -38,6 +38,7 @@
                         <input type="hidden" name="protocol" value="${protocol}">
                         <input type="hidden" name="_method" value="delete" />
                     </form>`;
+
         bootbox.dialog({
             message: html,
             title: "Delete IP Address",

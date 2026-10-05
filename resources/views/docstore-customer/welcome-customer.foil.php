@@ -1,7 +1,7 @@
-<div class="tw-max-w-lg">
+<div class="tw:max-w-lg">
 
     <?php if( Auth::getUser()->isSuperUser() ): ?>
-        <h3 class="tw-mb-8">
+        <h3 class="tw:mb-8">
           <?= __c( 'Welcome to the :Customer Document Store for :name', [ 'name' => $t->ee( $t->cust->name ) ] ) ?>
         </h3>
 
@@ -20,14 +20,14 @@
 
         <p>
             <b><?= __( 'For more information, :seeTheDocs.', [
-                'seeTheDocs' => '<a target="_blank" href="https://docs.ixpmanager.org/latest/features/docstore/">'
-                    . __( 'see the official documentation' ) . '</a>',
-            ] ) ?></b>
+            'seeTheDocs' => '<a target="_blank" href="https://docs.ixpmanager.org/latest/features/docstore/">'
+                . __( 'see the official documentation' ) . '</a>',
+        ] ) ?></b>
         </p>
 
     <?php else: ?>
 
-        <h3 class="tw-mb-8">Welcome To Your Document Store for <?= $t->ee( $t->cust->name ) ?></h3>
+        <h3 class="tw:mb-8">Welcome To Your Document Store for <?= $t->ee( $t->cust->name ) ?></h3>
 
         <p>
             If <?= config( 'identity.orgname' ) ?> has uploaded any files that are accessible by you then they will appear here.
@@ -41,9 +41,9 @@
 
         <p>
             <b><?= __( 'For more information, :seeTheDocs.', [
-                'seeTheDocs' => '<a target="_blank" href="https://docs.ixpmanager.org/latest/features/docstore/">'
-                    . __( 'see the official documentation' ) . '</a>',
-            ] ) ?></b>
+            'seeTheDocs' => '<a target="_blank" href="https://docs.ixpmanager.org/latest/features/docstore/">'
+                . __( 'see the official documentation' ) . '</a>',
+        ] ) ?></b>
         </p>
     <?php endif; ?>
 </div>

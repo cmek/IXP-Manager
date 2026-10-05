@@ -1,5 +1,5 @@
-<div class="tw-max-w-lg">
-    <h3 class="tw-mb-8"><?= __( 'Welcome to the Document Store!' ) ?></h3>
+<div class="tw:max-w-lg">
+    <h3 class="tw:mb-8"><?= __( 'Welcome to the Document Store!' ) ?></h3>
 
     <p>
         <?= __( ':app has a document store allowing administrators to upload documents to be made generally available for specific user classes (public, customer user, customer admin, superadmin). The document store supports:', [

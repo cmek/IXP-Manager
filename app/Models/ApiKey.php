@@ -42,7 +42,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $last_seen_at
  * @property string|null $last_seen_from
  * @property string|null $description
- * @property Carbon|null $created_at
+ * @property Carbon $created_at
  * @property Carbon|null $updated_at
  * @property-read \IXP\Models\User $user
  * @method static Builder<static>|ApiKey newModelQuery()
@@ -64,7 +64,7 @@ use Illuminate\Support\Carbon;
  */
 class ApiKey extends Model
 {
-    const PREFIX = 'ixpm_';
+    const string PREFIX = 'ixpm_';
 
 
     /**

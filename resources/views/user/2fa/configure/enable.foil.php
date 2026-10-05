@@ -1,5 +1,5 @@
 <?php if( Auth::getUser()->is2faEnforced() ): ?>
-    <div class="alert alert-warning tw-my-8" role="alert">
+    <div class="alert alert-warning tw:my-8" role="alert">
         <?= __( 'You do not have two-factor authentication enabled but it is compulsory for your user account. Please configure and enable 2fa below to proceed.' ) ?>
     </div>
 <?php endif; ?>
@@ -11,12 +11,12 @@
     <b><?= __( 'Step 1:' ) ?></b> <?= __( 'Set up your two factor authentication by scanning the barcode below.' ) ?>
 </p>
 
-<div class="tw-mx-auto">
+<div class="tw:mx-auto">
     <?= $t->qrcode ?>
 </div>
 
 <p>
-    <?= __( 'Alternatively, you can enter this code manually into your authenticator application:' ) ?> <b class="tw-font-mono"><?= $t->ee( $t->user->user2FA->secret ) ?></b>
+    <?= __( 'Alternatively, you can enter this code manually into your authenticator application:' ) ?> <b class="tw:font-mono"><?= $t->ee( $t->user->user2FA->secret ) ?></b>
 </p>
 
 <p>

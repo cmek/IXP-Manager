@@ -36,7 +36,7 @@ use IXP\Services\Validation\Dto\Result;
  *
  * @author Thomas Kerin <thomas@islandbridgenetworks.ie>
  */
-class PeeringDb implements Validator
+final class PeeringDb implements Validator
 {
     #[\Override]
     public function getName(): string
@@ -80,12 +80,12 @@ class PeeringDb implements Validator
                 "redirect"      => "peeringdb_oauth_redirect",
             ];
 
-            $missingConfig = array_filter( array_keys($configToSetting), fn( $field ) => config( "services.peeringdb." . $field ) === null );
+            $missingConfig = array_filter( array_keys($configToSetting), fn( string $field ) => config( "services.peeringdb." . $field ) === null );
             if (count($missingConfig) > 0) {
                 $backend->error( "PeeringDB OAUTH settings are not complete. Please check your service settings.")
                     ->withDocsPath('features/peeringdb-oauth/')
                     ->withSettingsLink("auth", $configToSetting[$missingConfig[0]])
-                    ->each($missingConfig, function (Result $result, $configKey) {
+                    ->each($missingConfig, function (Result $result, string $configKey) {
                         $result->addAdditionalInfoText("PeeringDB OAuth " . $configKey . " is missing!");
                     });
                 ;

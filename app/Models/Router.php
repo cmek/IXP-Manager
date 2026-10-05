@@ -54,6 +54,8 @@ use IXP\Traits\Observable;
  * @property string $template
  * @property bool $skip_md5
  * @property \Illuminate\Support\Carbon|null $last_update_started
+ * @property \Illuminate\Support\Carbon|null $last_updated
+ * @property int $pause_updates
  * @property bool $rpki
  * @property string|null $software_version
  * @property string|null $operating_system
@@ -61,8 +63,6 @@ use IXP\Traits\Observable;
  * @property int $rfc1997_passthru
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $last_updated
- * @property int $pause_updates
  * @property-read Router|null $pair
  * @property-read \IXP\Models\Vlan $vlan
  * @method static Builder<static>|Router hasApi()
@@ -164,8 +164,8 @@ class Router extends Model
     /**
      * CONST PROTOCOL
      */
-    public const string PROTOCOL_IPV4                 = '4';
-    public const string PROTOCOL_IPV6                 = '6';
+    public const string PROTOCOL_IPV4 = '4';
+    public const string PROTOCOL_IPV6 = '6';
 
     /**
      * @var array Router Protocols

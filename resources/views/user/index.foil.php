@@ -110,18 +110,18 @@
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a class="btn btn-white" href="<?= route('user@view' , [ 'u' => $u[ 'id' ] ] ) ?>"  title="<?= __( 'Preview' ) ?>">
+                                    <a class="btn btn-white" href="<?= route('user@view' , [ 'u' => $u[ 'id' ] ] ) ?>"  title="Preview">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-white" id='btn-edit-<?= $u[ 'id' ] ?>' href="<?= route('user@edit' , [ 'u' => $u[ 'id' ] ] ) ?> " title="<?= __( 'Edit' ) ?>">
+                                    <a class="btn btn-white" id='btn-edit-<?= $u[ 'id' ] ?>' href="<?= route('user@edit' , [ 'u' => $u[ 'id' ] ] ) ?> " title="Edit">
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     <?php if( $isSuperUser ): ?>
-                                        <a class="btn btn-white btn-delete" id="btn-delete-<?= $u[ 'id' ] ?>" data-object-id='<?= $u[ 'id' ] ?>' data-nb-c2u="<?= $u[ 'nbC2U' ] ?>" href="<?= route( 'user@delete', [ 'u' => $u[ 'id' ] ] )  ?>" title="<?= __( 'Delete' ) ?>">
+                                        <a class="btn btn-white btn-delete" id="btn-delete-<?= $u[ 'id' ] ?>" data-object-id='<?= $u[ 'id' ] ?>' data-nb-c2u="<?= $u[ 'nbC2U' ] ?>" href="<?= route( 'user@delete', [ 'u' => $u[ 'id' ] ] )  ?>" title="Delete">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     <?php else: ?>
-                                        <a class="btn btn-white btn-delete" id="btn-delete-<?= $u[ 'id' ] ?>" data-object-id='<?= $t->nbC2u[ $u[ 'id' ] ][ 'nbC2U' ] > 1 ? $u[ 'c2uid' ] : $u[ 'id' ] ?>' data-nb-c2u="<?= $t->nbC2u[ $u[ 'id' ] ][ 'nbC2U' ] ?>" href="<?= $t->nbC2u[ $u[ 'id' ] ][ 'nbC2U' ] > 1 ? route( 'customer-to-user@delete' , [ 'c2u' => $u[ 'c2uid' ] ] ) : route('user@delete' , [ 'u' => $u[ 'id' ] ] )  ?>" title="<?= __( 'Delete' ) ?>">
+                                        <a class="btn btn-white btn-delete" id="btn-delete-<?= $u[ 'id' ] ?>" data-object-id='<?= $t->nbC2u[ $u[ 'id' ] ][ 'nbC2U' ] > 1 ? $u[ 'c2uid' ] : $u[ 'id' ] ?>' data-nb-c2u="<?= $t->nbC2u[ $u[ 'id' ] ][ 'nbC2U' ] ?>" href="<?= $t->nbC2u[ $u[ 'id' ] ][ 'nbC2U' ] > 1 ? route( 'customer-to-user@delete' , [ 'c2u' => $u[ 'c2uid' ] ] ) : route('user@delete' , [ 'u' => $u[ 'id' ] ] )  ?>" title="Delete">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     <?php endif; ?>
@@ -161,8 +161,8 @@
         </div>
     </div>
 
-    <div class="tw-mt-16 tw-border-2 tw-border-gray-400 tw-rounded-lg">
-        <p class="tw-p-6 tw-m-0">
+    <div class="tw:mt-16 tw:border-2 tw:border-gray-400 tw:rounded-lg">
+        <p class="tw:p-6 tw:m-0">
             <b><?= __( 'Privileges:' ) ?></b> <?= __( 'CU - Cust User; CA - Cust Admin; SU - Super User.' ) ?><br>
             <b><?= __( 'Flags:' ) ?></b> <span class="badge badge-success"><?= __( '2FA' ) ?></span> <?= __( '- Two-factor authentication is enabled;' ) ?> <span class="badge badge-success"><?= __( 'OAuth' ) ?></span> <?= __( '- user created via PeeringDB OAuth.' ) ?><br>
             <b><?= __( 'Disabled Users:' ) ?></b> <?= __( '- identified with' ) ?> <span class="badge badge-danger">X</span> <?= __( 'badge beside username.' ) ?>

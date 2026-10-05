@@ -1,4 +1,4 @@
-<div class="alert alert-success tw-my-8" role="alert">
+<div class="alert alert-success tw:my-8" role="alert">
     <?= __( 'You have two factor authentication enabled.' ) ?>
 </div>
 
@@ -6,15 +6,15 @@
     <?= __( 'You can use the QR image or the code below to (re)configure your current or a new 2fa code generator.' ) ?>
 </p>
 
-<div class="tw-mx-auto">
+<div class="tw:mx-auto">
     <?= $t->qrcode ?>
 </div>
 
 <p>
-    <?= __( 'Code:' ) ?> <b class="tw-font-mono"><?= $t->ee( $t->user->user2FA->secret ) ?></b>
+    <?= __( 'Code:' ) ?> <b class="tw:font-mono"><?= $t->ee( $t->user->user2FA->secret ) ?></b>
 </p>
 
-<hr class="tw-my-8">
+<hr class="tw:my-8">
 
 <p>
     <?= __( 'If you wish to disable two-factor authentication, please enter your password below.' ) ?>

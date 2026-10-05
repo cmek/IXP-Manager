@@ -99,17 +99,14 @@
         </div>
     <?php endif; ?>
 
-    <?php if( session('msg') ): ?>
-        <div class="alert alert-dark" role="alert">
-            <?= session('msg') ?>
-        </div>
-    <?php endif; ?>
+    <?= $t->alerts() ?>
+
 <?php $this->append() ?>
 
 <?php $this->section('scripts') ?>
 
 
-    <script type="text/javascript">
+    <script type="module">
         // http://stackoverflow.com/questions/12449890/reload-content-in-modal-twitter-bootstrap
         $(document).on('hidden.bs.modal', function (e) {
             $(e.target).removeData('bs.modal');

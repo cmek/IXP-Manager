@@ -70,9 +70,9 @@ use IXP\Traits\Observable;
  * @property string|null $name
  * @property int|null $peeringdb_id
  * @property array<array-key, mixed>|null $extra_attributes (DC2Type:json)
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property array<array-key, mixed>|null $prefs
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \IXP\Models\ApiKey> $apiKeys
  * @property-read int|null $api_keys_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \IXP\Models\AppPassword> $appPasswords
@@ -113,7 +113,6 @@ use IXP\Traits\Observable;
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasLocalePreference
 {
-
     use Authenticatable, Authorizable, CanResetPassword, Notifiable, Observable;
     /**
      * The table associated with the model.
@@ -137,50 +136,64 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'prefs'             => '{}',
     ];
 
-    public const AUTH_PUBLIC    = 0;
-    public const AUTH_CUSTUSER  = 1;
-    public const AUTH_CUSTADMIN = 2;
-    public const AUTH_SUPERUSER = 3;
+    public const int AUTH_PUBLIC    = 0;
+    public const int AUTH_CUSTUSER  = 1;
+    public const int AUTH_CUSTADMIN = 2;
+    public const int AUTH_SUPERUSER = 3;
 
     /**
      * @var array<int, string>
      */
-    public static $PRIVILEGES = [
+    public static array $PRIVILEGES = [
         self::AUTH_CUSTUSER  => 'CUSTUSER',
         self::AUTH_CUSTADMIN => 'CUSTADMIN',
         self::AUTH_SUPERUSER => 'SUPERUSER',
     ];
 
-    public static $PRIVILEGES_ALL = [
+    public static array $PRIVILEGES_ALL = [
         self::AUTH_PUBLIC    => 'PUBLIC',
         self::AUTH_CUSTUSER  => 'CUSTUSER',
         self::AUTH_CUSTADMIN => 'CUSTADMIN',
         self::AUTH_SUPERUSER => 'SUPERUSER',
     ];
 
-    public static $PRIVILEGES_TEXT = [
+    public static array $PRIVILEGES_TEXT = [
         self::AUTH_CUSTUSER  => 'Customer User',
         self::AUTH_CUSTADMIN => 'Customer Administrator',
         self::AUTH_SUPERUSER => 'Superuser',
     ];
 
-    public static $PRIVILEGES_TEXT_ALL = [
+    public static array $PRIVILEGES_TEXT_ALL = [
         self::AUTH_PUBLIC    => 'Public / Non-User',
         self::AUTH_CUSTUSER  => 'Customer User',
         self::AUTH_CUSTADMIN => 'Customer Administrator',
         self::AUTH_SUPERUSER => 'Superuser',
     ];
 
-    public static $PRIVILEGES_TEXT_NONSUPERUSER = [
+    public static array $PRIVILEGES_TEXT_NONSUPERUSER = [
         self::AUTH_CUSTUSER  => 'Customer User',
         self::AUTH_CUSTADMIN => 'Customer Administrator',
     ];
 
-    public static $PRIVILEGES_TEXT_VSHORT = [
+    public static array $PRIVILEGES_TEXT_VSHORT = [
         self::AUTH_CUSTUSER  => 'CU',
         self::AUTH_CUSTADMIN => 'CA',
         self::AUTH_SUPERUSER => 'SU',
     ];
+
+    /**
+     * This ensures that when changes affecting custid are saved, that we purge 'currentCustomerToUser' relation from memory
+     * Otherwise we are keeping around the old record referring to a different customer to user record.
+     */
+    #[\Override]
+    protected static function booted(): void
+    {
+        static::updated(function (User $user) {
+            if ($user->wasChanged('custid')) {
+                $user->unsetRelation('currentCustomerToUser');
+            }
+        });
+    }
 
     /**
      * Get the remember tokens for the user
@@ -384,7 +397,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         return $this->privs() >= config( "google2fa.ixpm_2fa_enforce_for_users" )
-            && ( !$this->user2FA || !$this->user2FA->enabled );
+            && ( !$this->user2FA || !$this->user2FA->isEnabled() );
     }
 
     /**
@@ -398,7 +411,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        if( !$this->user2FA || !$this->user2FA->enabled ) {
+        if( !$this->user2FA || !$this->user2FA->isEnabled() ) {
             // If the user does not have 2fa configured or enabled but it is required, then return true:
             if( $this->is2faEnforced() ) {
                 return true;
@@ -418,6 +431,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Defines a relationship to query against the **current** customer-to-user
      * record for the user. Benefits from memoization instead of querying every
      * single time.
+     *
+     * This is a relation that relies on a composite key, which is why the subquery
+     * is required.
      *
      * @return HasOne
      */
@@ -461,6 +477,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         // However, some Laravel functionality if triggered on this returning a non-false value
         // to execute certain functionality. As such, we'll just return something random:
         return Str::random(60);
+    }
+
+    /**
+     * Mark users remember me token (if there is any) as having completed 2FA
+     */
+    public function markRememberToken2faComplete(string $token): bool
+    {
+        return $this->userRememberTokens()->whereToken($token)->first()
+            ?->record2faIsComplete() ?? false;
     }
 
     /**

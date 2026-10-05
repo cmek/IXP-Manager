@@ -1,5 +1,5 @@
-<div class="tw-max-w-lg">
-    <h3 class="tw-mb-8">
+<div class="tw:max-w-lg">
+    <h3 class="tw:mb-8">
       <?= __c( 'Welcome to the :Customer Document Store!' ) ?>
     </h3>
 
@@ -31,6 +31,9 @@
     </ul>
 
     <p>
-        <b><?= __( 'For more information,' ) ?> <a target="_blank" href="https://docs.ixpmanager.org/latest/features/docstore/"><?= __( 'see the official documentation here' ) ?></a>.</b>
+        <b><?= __( 'For more information, :seeTheDocs.', [
+            'seeTheDocs' => '<a target="_blank" href="https://docs.ixpmanager.org/latest/features/docstore/">'
+                . __( 'see the official documentation' ) . '</a>',
+        ] ) ?></b>
     </p>
 </div>

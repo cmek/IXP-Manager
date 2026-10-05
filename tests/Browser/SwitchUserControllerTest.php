@@ -141,7 +141,6 @@ class SwitchUserControllerTest extends DuskTestCase
 
             $browser->visit( "/admin/switch-user-back")
                 ->assertPathIs( "/admin/dashboard" )
-                ->screenshot("shotty")
                 ->assertSee( "You are not currently logged in as another user. You are logged in as: " . $travis->username . "( " . $travis->name . ")" );
 
             // cleanup tests
@@ -161,6 +160,7 @@ class SwitchUserControllerTest extends DuskTestCase
      */
     public function testLoginAs2FA(): void
     {
+        $this->replaceEnvAttr( '2FA_ENFORCE_FOR_USERS="4"','2FA_ENFORCE_FOR_USERS="1"' );
         $this->replaceEnvAttr( '2FA_ENABLED=false', '2FA_ENABLED=true' );
         $this->awaitArtisanEnvReload();
 

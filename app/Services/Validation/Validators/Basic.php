@@ -34,7 +34,7 @@ use IXP\Services\Validation\Dto\Result;
 /**
  * @author Thomas Kerin <thomas@islandbridgenetworks.ie>
  */
-class Basic implements Validator
+final class Basic implements Validator
 {
     #[\Override]
     public function getName(): string
@@ -222,7 +222,7 @@ class Basic implements Validator
         // Since we have a need to create additional directories (grapher), add a separate directory create check here.
         // Although file and directory creation have the same permissions, external factors can cause one to fail
         // and not the other.
-        $writableDirectories = ["bootstrap", "storage/app/", "storage/docstore/", "storage/docstore_customers/", "storage/files/",
+        $writableDirectories = ["bootstrap/cache/", "storage/app/", "storage/docstore/", "storage/docstore_customers/", "storage/files/",
             "storage/framework/cache/", "storage/framework/sessions/", "storage/framework/views/",
             "storage/logs/", "storage/tmp/", "storage/"];
 
@@ -247,23 +247,29 @@ class Basic implements Validator
             if ($isWritable) {
                 $writeOk[] = $directory;
             } else {
-                $writeFail[] = $directory;
+                $writeFail[] = base_path($directory);
             }
         }
 
         if (count($writeFail) === 0) {
             $backend->info( "All " . $type . " write permission tests passed" )
-                ->each( $writeOk, function( Result $result, $directory ) {
+                ->each( $writeOk, function( Result $result, string $directory ) {
                     $result->addAdditionalInfoText( " - " . $directory . " was writable");
                 } );
         } else {
             $backend->error( "Missing " . $type . " write permission for some storage directories:" )
-                ->each( $writeFail, function( Result $result, $directory ) use ($type) {
+                ->withDocsPath("install/upgrading/#instructions")
+                ->each( $writeFail, function( Result $result, string $directory ) use ($type) {
                     $result->addAdditionalInfoText( " - Failed to create test " . $type . " in " . $directory );
-                });
+                })
+                ->addAdditionalInfoText( "The following commands are taken from the IXP Manager documentation on Upgrading and should fix the problem.  If your web server does not run as user www-data, replace www-data with the actual webserver user on your system." )
+                ->addAdditionalInfoText( "" )
+                ->addAdditionalInfoText( "sudo chown -R www-data: " . base_path() . "/{bootstrap/cache,composer.lock,storage,vendor}" )
+                ->addAdditionalInfoText( "sudo chmod -R ug+rwX " . base_path() . "/{bootstrap/cache,composer.lock,storage,vendor}" )
+            ;
             if (count($writeOk) > 0) {
                 $backend->info( "Had " . $type . " write permission for some storage directories:" )
-                    ->each( $writeOk, function( Result $result, $directory ) {
+                    ->each( $writeOk, function( Result $result, string $directory ) {
                         $result->addAdditionalInfoText( " - " . $directory . " was writable" );
                     });
             }
